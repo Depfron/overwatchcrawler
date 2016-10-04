@@ -2,7 +2,7 @@ package com.sj.Controller;
 
 import com.google.gson.Gson;
 import com.sj.Service.OverwatchService;
-import com.sj.DTO.Player;
+import com.sj.DTO.PlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +29,11 @@ public class OverwatchController {
     @RequestMapping("/players")
     @ResponseBody
     public String getPlayers() {
-        List<Player> players = overwatchService.getPlayers();
+        List<PlayerDTO> playerDTOs = overwatchService.getPlayers();
 
-        Map<String, List<Player>> map = new HashMap<String, List<Player>>();
+        Map<String, List<PlayerDTO>> map = new HashMap<String, List<PlayerDTO>>();
 
-        map.put("players", players);
+        map.put("players", playerDTOs);
         String jsonData = gson.toJson(map);
 
         System.out.println(jsonData);

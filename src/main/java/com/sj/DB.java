@@ -1,6 +1,6 @@
 package com.sj;
 
-import com.sj.DTO.Player;
+import com.sj.DTO.PlayerDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -8,12 +8,12 @@ import java.util.Map;
 
 @Repository
 public class DB {
-    private Map<String, Player> players = new HashMap<String, Player>();
+    private Map<String, PlayerDTO> players = new HashMap<String, PlayerDTO>();
 
     public boolean isPlayerExisted(String nickName) {
         boolean isFind = false;
 
-        for(Map.Entry<String, Player> player : players.entrySet()) {
+        for(Map.Entry<String, PlayerDTO> player : players.entrySet()) {
             if(player.getKey().equals(nickName)) {
                 isFind = true;
                 break;
@@ -23,11 +23,11 @@ public class DB {
         return isFind;
     }
 
-    public Player getPlayer(String key) {
+    public PlayerDTO getPlayer(String key) {
         return players.get(key);
     }
 
-    public void addPlayer(String key, Player player) {
-        players.put(key, player);
+    public void addPlayer(String key, PlayerDTO playerDTO) {
+        players.put(key, playerDTO);
     }
 }

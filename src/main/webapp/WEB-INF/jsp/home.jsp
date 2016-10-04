@@ -29,7 +29,7 @@
                     var players = data.players;
                     players.forEach(function(e){
                         var $newDiv = $("<div>");
-                        $newDiv.text(e.nickName + " " + e.competitivePoint + "점");
+                        $newDiv.text(e.name + " " + e.nickName + " " + e.competitivePoint + "점");
                         $("#playerList").append($newDiv);
                         console.log(e);
                     });

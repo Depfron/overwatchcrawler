@@ -3,7 +3,7 @@ package com.sj.DTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Player {
+public class PlayerDTO {
     private String name;
     private String nickName;
     private String battleTag;
