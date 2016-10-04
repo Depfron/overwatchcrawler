@@ -55,7 +55,7 @@ public class OverwatchService {
         battleTags.add(new BattleTagDTO("김재면", "Apple", "3580"));
         battleTags.add(new BattleTagDTO("성열민", "리자몽", "31628"));
         battleTags.add(new BattleTagDTO("이기찬", "아이휴", "3739"));
-        battleTags.add(new BattleTagDTO("전익수", "Sundrops", "3572"));
+        //battleTags.add(new BattleTagDTO("전익수", "Sundrops", "3572"));
         battleTags.add(new BattleTagDTO("강명우", "맹이맹이", "3462"));
         battleTags.add(new BattleTagDTO("공병국", "API", "3411"));
         battleTags.add(new BattleTagDTO("이상록", "kwk", "3409"));
