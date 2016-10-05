@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -71,10 +72,22 @@ public class OverwatchController {
 
         BattleTagDTO existBattleTagDTO = battleTagDAO.findByNickName(battleTagDTO.getNickName());
 
-        if(existBattleTagDTO == null)
+        if(existBattleTagDTO == null) {
             battleTagDAO.save(battleTagDTO);
 
-        return "redirect:" + "home";
+            try {
+                PlayerDTO playerDTO = overwatchService.getPlayer(battleTagDTO);
+                playerDAO.save(playerDTO);
+            } catch (IOException e) {
+                e.printStackTrace();
+                battleTagDAO.delete(battleTagDTO);
+                return "ERROR_WRONGINFO";
+            }
+            return "OK";
+        }
+        else {
+            return "ERROR_EXIST";
+        }
     }
 
 }

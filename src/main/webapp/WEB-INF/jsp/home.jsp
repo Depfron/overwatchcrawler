@@ -21,12 +21,13 @@
     <script src="jquery-3.1.0.js"></script>
     <script>
         $(document).ready(function(){
-            $.ajax({
+            var $getPlayerList = $.ajax({
                 type : "post",
                 url : "/players",
                 dataType : "json",
                 success : function(data) {
                     var players = data.players;
+                    $("#playerList").html("");
                     players.forEach(function(e){
                         var $newDiv = $("<div>");
                         $newDiv.text(e.name + " " + e.nickName + " " + e.competitivePoint + "점");
@@ -35,8 +36,10 @@
                     });
                 }
             });
+            $getPlayerList.done();
 
             $("#write").click(function(){
+                $("#write").attr("disabled", true);
                 var form = document.writeform;
                 var name = form.name.value;
                 var nickName = form.nickName.value;
@@ -49,13 +52,25 @@
 
                 //alert(JSON.stringify(obj));
 
-               $.ajax({
-                   url : "/write",
-                   method: "post",
-                   type: "json",
-                   contentType: "application/json",
-                   data : JSON.stringify(obj)
-               })
+                var $sendRequset = $.ajax({
+                    url : "/write",
+                    method: "post",
+                    type: "json",
+                    contentType: "application/json",
+                    data : JSON.stringify(obj),
+                    success : function(msg) {
+                        //alert(msg);
+                    }
+                });
+
+                $sendRequset.done(function(msg){
+                    if(msg == "OK")
+                        $getPlayerList.done();
+                    else
+                        alert("ERROR");
+
+                    $("#write").attr("disabled", false);
+                });
             });
 
         });

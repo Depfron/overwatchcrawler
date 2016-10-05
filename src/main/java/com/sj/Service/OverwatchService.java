@@ -26,20 +26,8 @@ public class OverwatchService {
     private BattleTagDAO battleTagDAO;
 
     public List getPlayers() {
-        List<PlayerDTO> playerDTOs = new ArrayList<PlayerDTO>();
-        List<BattleTagDTO> battleTags = battleTagDAO.findAll();
-
-        for(BattleTagDTO battleTag: battleTags) {
-            try{
-                PlayerDTO playerDTO = getPlayer(battleTag);
-                playerDTOs.add(playerDTO);
-            }catch(Exception e) {
-                battleTagDAO.delete(battleTag);
-            }
-        }
-
+        List<PlayerDTO> playerDTOs = playerDAO.findAll();
         Collections.sort(playerDTOs, new RankDescCompare());
-
         return playerDTOs;
     }
 
@@ -52,7 +40,7 @@ public class OverwatchService {
         }
     }
 
-    private PlayerDTO getPlayer(BattleTagDTO battleTag) throws IOException {
+    public PlayerDTO getPlayer(BattleTagDTO battleTag) throws IOException {
 
         PlayerDTO playerDTO;
         playerDTO = playerDAO.findByNickName(battleTag.getNickName());
@@ -62,22 +50,30 @@ public class OverwatchService {
 
         System.out.println("Call getPlayerInfo()");
 
+
+        playerDTO = new PlayerDTO();
+
         String url = urlPath;
         url = url + URLEncoder.encode(battleTag.getNickName(), "UTF-8");
         url = url + "-" + battleTag.getBattleTag();
 
         System.out.println("url : " + url);
         Document doc = Jsoup.connect(url).timeout(5000).get();
-        String rank =  doc.select("div.competitive-rank").select(".h6").first().text();
+        String rank;
+        try{
+            rank =  doc.select("div.competitive-rank").select(".h6").first().text();
+            playerDTO.setCompetitivePoint(Integer.parseInt(rank));
+        }catch(Exception e){
+            rank = "언랭";
+            playerDTO.setCompetitivePoint(0);
+        }
         String name =  doc.select("h1.header-masthead").text();
 
         System.out.println("name = " + name);
         System.out.println("rank = " + rank);
 
-        playerDTO = new PlayerDTO();
         playerDTO.setNickName(battleTag.getNickName());
         playerDTO.setBattleTag(battleTag.getBattleTag());
-        playerDTO.setCompetitivePoint(Integer.parseInt(rank));
         playerDTO.setName(battleTag.getName());
 
 
