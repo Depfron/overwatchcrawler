@@ -42,22 +42,19 @@
                 var nickName = form.nickName.value;
                 var battleTag = form.battleTag.value;
 
-                var jsonData = new Array();
                 var obj = new Object();
                 obj.name = name;
                 obj.nickName = nickName;
                 obj.battleTag = battleTag;
 
-                jsonData.push(obj);
-                console.log(jsonData);
-
-                alert(JSON.stringify(jsonData));
+                //alert(JSON.stringify(obj));
 
                $.ajax({
-                   type : "POST",
                    url : "/write",
-                   data : JSON.stringify(jsonData),
-                   dataType : "json"
+                   method: "post",
+                   type: "json",
+                   contentType: "application/json",
+                   data : JSON.stringify(obj)
                })
             });
 

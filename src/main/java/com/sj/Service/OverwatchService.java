@@ -34,7 +34,7 @@ public class OverwatchService {
                 PlayerDTO playerDTO = getPlayer(battleTag);
                 playerDTOs.add(playerDTO);
             }catch(Exception e) {
-
+                battleTagDAO.delete(battleTag);
             }
         }
 
@@ -52,7 +52,7 @@ public class OverwatchService {
         }
     }
 
-    public PlayerDTO getPlayer(BattleTagDTO battleTag) throws IOException {
+    private PlayerDTO getPlayer(BattleTagDTO battleTag) throws IOException {
 
         PlayerDTO playerDTO;
         playerDTO = playerDAO.findByNickName(battleTag.getNickName());
@@ -79,6 +79,8 @@ public class OverwatchService {
         playerDTO.setBattleTag(battleTag.getBattleTag());
         playerDTO.setCompetitivePoint(Integer.parseInt(rank));
         playerDTO.setName(battleTag.getName());
+
+
 
         playerDAO.save(playerDTO);
 

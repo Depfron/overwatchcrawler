@@ -46,7 +46,7 @@ public class OverwatchController {
     @RequestMapping("/players")
     @ResponseBody
     public String getPlayers() {
-        List<PlayerDTO> playerDTOs = playerDAO.findAll();
+        List<PlayerDTO> playerDTOs = overwatchService.getPlayers();
 
         Map<String, List<PlayerDTO>> map = new HashMap<String, List<PlayerDTO>>();
 
@@ -58,24 +58,23 @@ public class OverwatchController {
         return jsonData;
     }
 
-    @RequestMapping(value = "/write", method = RequestMethod.POST)
-    public @ResponseBody String write(@RequestBody String jsonData) {
-
+    @RequestMapping(value = "/write")
+    @ResponseBody
+    public String write(@RequestBody String jsonData) {
         try {
-            URLDecoder.decode(jsonData , "EUC_KR");
-            logger.info(jsonData);
+            jsonData = URLDecoder.decode(jsonData , "UTF-8");
+            logger.info(URLDecoder.decode(jsonData , "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        List<Object> list = gson.fromJson(jsonData, List.class);
-        BattleTagDTO battleTagDTO = new BattleTagDTO();
+        BattleTagDTO battleTagDTO = gson.fromJson(jsonData, BattleTagDTO.class);
 
         BattleTagDTO existBattleTagDTO = battleTagDAO.findByNickName(battleTagDTO.getNickName());
 
         if(existBattleTagDTO == null)
             battleTagDAO.save(battleTagDTO);
 
-        return "home";
+        return "redirect:" + "home";
     }
 
 }
