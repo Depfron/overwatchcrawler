@@ -1,13 +1,27 @@
 package com.sj.DTO;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.*;
 
-@Component
+@Entity
 public class PlayerDTO {
+
+    @Id
+    @GeneratedValue
+    private int id;
+
+    @Column
     private String name;
+
+    @Column
     private String nickName;
+
+    @Column
     private String battleTag;
+
+    @Column
     private int competitivePoint;
+
+    @Column
     private int level;
 
     public String getName() {
@@ -48,5 +62,13 @@ public class PlayerDTO {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

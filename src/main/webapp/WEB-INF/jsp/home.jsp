@@ -35,10 +35,66 @@
                     });
                 }
             });
+
+            $("#write").click(function(){
+                var form = document.writeform;
+                var name = form.name.value;
+                var nickName = form.nickName.value;
+                var battleTag = form.battleTag.value;
+
+                var jsonData = new Array();
+                var obj = new Object();
+                obj.name = name;
+                obj.nickName = nickName;
+                obj.battleTag = battleTag;
+
+                jsonData.push(obj);
+                console.log(jsonData);
+
+                alert(JSON.stringify(jsonData));
+
+               $.ajax({
+                   type : "POST",
+                   url : "/write",
+                   data : JSON.stringify(jsonData),
+                   dataType : "json"
+               })
+            });
+
         });
     </script>
 </head>
 <body>
+<form name=writeform method=post >
+    <table>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">이름</td>
+            <td><input id="name" size="50" maxlength="100" value="ex) 홍석진"></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr height="1" bgcolor="#dddddd"><td colspan="4"></td></tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">닉네임</td>
+            <td><input id="nickName" size="50" maxlength="50" value="ex) Tuna"></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr height="1" bgcolor="#dddddd"><td colspan="4"></td></tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">배틀태그</td>
+            <td><input id="battleTag" size="50" maxlength="50" value="ex) 3927"></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr align="center">
+            <td>&nbsp;</td>
+            <td colspan="2">
+                <input type=button value="등록" id="write">
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</form>
 <div align="center" id="playerList">
 </div>
 </body>
