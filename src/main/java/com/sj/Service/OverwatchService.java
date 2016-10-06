@@ -4,6 +4,7 @@ import com.sj.DAO.BattleTagDAO;
 import com.sj.DAO.PlayerDAO;
 import com.sj.DTO.BattleTagDTO;
 import com.sj.DTO.PlayerDTO;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import java.util.*;
 
 @Service
 public class OverwatchService {
+
+    private Logger logger = Logger.getLogger(OverwatchService.class);
 
     private static String urlPath = "https://playoverwatch.com/ko-kr/career/pc/kr/";
 
@@ -48,29 +51,22 @@ public class OverwatchService {
             return playerDTO;
         }
 
-        System.out.println("Call getPlayerInfo()");
-
-
         playerDTO = new PlayerDTO();
 
         String url = urlPath;
         url = url + URLEncoder.encode(battleTag.getNickName(), "UTF-8");
         url = url + "-" + battleTag.getBattleTag();
 
-        System.out.println("url : " + url);
         Document doc = Jsoup.connect(url).timeout(5000).get();
         String rank;
         try{
             rank =  doc.select("div.competitive-rank").select(".h6").first().text();
             playerDTO.setCompetitivePoint(Integer.parseInt(rank));
         }catch(Exception e){
-            rank = "언랭";
-            playerDTO.setCompetitivePoint(0);
+            playerDTO.setCompetitivePoint(-1);
+            logger.warn("No Competitive rank point. Set -1");
         }
-        String name =  doc.select("h1.header-masthead").text();
-
-        System.out.println("name = " + name);
-        System.out.println("rank = " + rank);
+        //String name =  doc.select("h1.header-masthead").text();
 
         playerDTO.setNickName(battleTag.getNickName());
         playerDTO.setBattleTag(battleTag.getBattleTag());

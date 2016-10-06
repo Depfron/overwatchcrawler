@@ -3,76 +3,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
     <meta charset="UTF-8">
-    <title>공부중</title>
-    <style>
-        body {
-            font-size:9pt;
-            font-family:"굴림";
-        }
-        div, p, ul, li {
-            border:1px #eeeeee solid;
-            margin:10px;
-        }
-        ul {
-            padding:10px;
-        }
-
-    </style>
+    <title>경쟁전 점수</title>
     <script src="jquery-3.1.0.js"></script>
     <script>
+
         $(document).ready(function(){
-            var $getPlayerList = $.ajax({
+
+            $.ajax({
                 type : "post",
                 url : "/players",
                 dataType : "json",
                 success : function(data) {
-                    var players = data.players;
-                    $("#playerList").html("");
-                    players.forEach(function(e){
-                        var $newDiv = $("<div>");
-                        $newDiv.text(e.name + " " + e.nickName + " " + e.competitivePoint + "점");
-                        $("#playerList").append($newDiv);
-                        console.log(e);
-                    });
+                    var playerList = data.players;
+                    writePlayerList(playerList);
                 }
             });
-            $getPlayerList.done();
 
             $("#write").click(function(){
                 $("#write").attr("disabled", true);
-                var form = document.writeform;
-                var name = form.name.value;
-                var nickName = form.nickName.value;
-                var battleTag = form.battleTag.value;
 
                 var obj = new Object();
-                obj.name = name;
-                obj.nickName = nickName;
-                obj.battleTag = battleTag;
+                var form = document.writeform;
+                obj.name = form.name.value;;
+                obj.nickName = form.nickName.value;
+                obj.battleTag = form.battleTag.value;
 
-                //alert(JSON.stringify(obj));
-
-                var $sendRequset = $.ajax({
+                var $sendRequest = $.ajax({
                     url : "/write",
                     method: "post",
                     type: "json",
                     contentType: "application/json",
                     data : JSON.stringify(obj),
-                    success : function(msg) {
-                        //alert(msg);
+                    success : function(msg){
+                        if(msg == "OK") {
+                            $.ajax({
+                                type : "post",
+                                url : "/players",
+                                dataType : "json",
+                                success : function(data) {
+                                    var playerList = data.players;
+                                    writePlayerList(playerList);
+                                }
+                            });
+                        }
+                        else
+                            alert("ERROR");
+                        $("#write").attr("disabled", false);
                     }
                 });
-
-                $sendRequset.done(function(msg){
-                    if(msg == "OK")
-                        $getPlayerList.done();
-                    else
-                        alert("ERROR");
-
-                    $("#write").attr("disabled", false);
-                });
             });
-
         });
     </script>
 </head>
@@ -111,4 +90,16 @@
 </div>
 </body>
 
+<script>
+    function writePlayerList(players) {
+        $("#playerList").html("");
+        players.forEach(function(e){
+            var $newDiv = $("<div>");
+            $newDiv.text(e.name + " " + e.nickName + " " + e.competitivePoint + "점");
+            $("#playerList").append($newDiv);
+            console.log(e);
+        });
+    };
+</script>
 
+</html>

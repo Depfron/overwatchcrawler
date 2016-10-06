@@ -54,7 +54,7 @@ public class OverwatchController {
         map.put("players", playerDTOs);
         String jsonData = gson.toJson(map);
 
-        logger.info(jsonData);
+        logger.info("Call public String getPlayers()");
 
         return jsonData;
     }
@@ -66,7 +66,7 @@ public class OverwatchController {
             jsonData = URLDecoder.decode(jsonData , "UTF-8");
             logger.info(URLDecoder.decode(jsonData , "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Decoding ERROR from public String write()");
         }
         BattleTagDTO battleTagDTO = gson.fromJson(jsonData, BattleTagDTO.class);
 
@@ -79,8 +79,10 @@ public class OverwatchController {
                 PlayerDTO playerDTO = overwatchService.getPlayer(battleTagDTO);
                 playerDAO.save(playerDTO);
             } catch (IOException e) {
-                e.printStackTrace();
                 battleTagDAO.delete(battleTagDTO);
+                logger.warn("This player isn't exist. Can't crawl information");
+                logger.warn("Delete from BattleTag DB : {" + battleTagDTO.getName() + ", " + battleTagDTO.getNickName()
+                + ", " + battleTagDTO.getBattleTag() + "}");
                 return "ERROR_WRONGINFO";
             }
             return "OK";
