@@ -82,21 +82,21 @@
         <tr>
             <td>&nbsp;</td>
             <td align="center">이름</td>
-            <td><input id="name" size="50" maxlength="100" value="ex) 홍석진"></td>
+            <td><input id="name" size="50" maxlength="100" placeholder="ex) 홍석진"></td>
             <td>&nbsp;</td>
         </tr>
         <tr height="1" bgcolor="#dddddd"><td colspan="4"></td></tr>
         <tr>
             <td>&nbsp;</td>
             <td align="center">닉네임</td>
-            <td><input id="nickName" size="50" maxlength="50" value="ex) Tuna"></td>
+            <td><input id="nickName" size="50" maxlength="50" placeholder="ex) Tuna"></td>
             <td>&nbsp;</td>
         </tr>
         <tr height="1" bgcolor="#dddddd"><td colspan="4"></td></tr>
         <tr>
             <td>&nbsp;</td>
             <td align="center">배틀태그</td>
-            <td><input id="battleTag" size="50" maxlength="50" value="ex) 3927"></td>
+            <td><input id="battleTag" size="50" maxlength="50" placeholder="ex) 3927"></td>
             <td>&nbsp;</td>
         </tr>
         <tr align="center">
